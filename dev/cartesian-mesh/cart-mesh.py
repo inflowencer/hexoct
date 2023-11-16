@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 import sys
 
 # No of cells in each direction
-Nx = 2
-Ny = 3
-Nz = 3
+Nx = 200
+Ny = 300
+Nz = 300
 
 dx = 1
 
@@ -81,14 +81,10 @@ for c in range(Ntotal):
     cells[c][7] = H
 
     if zcounter % Nz == 0 and not xcounter % (Ny * Nz) == 0:
-        print("Loop 1, c = ", c+1)
         A0 += zjump - 2
         A = A0
         zcounter = 0
     elif xcounter % (Ny * Nz) == 0:
-        print("Loop 2, c = ", c+1)
-        print("H = ", H)
-        print("AE = ", AE)
         A0 = H - (AE - 1)
         A = A0
         xcounter = 0

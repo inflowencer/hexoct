@@ -1,0 +1,89 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1706                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    "(rho|rhoU|rhoE|rhoEv.*)"
+    {
+        solver          diagonal;
+        // solver          PCG;
+        // preconditioner  diagonal;
+        // tolerance       1e-12;
+        // relTol          0.001;
+    }
+
+    U
+    {
+        solver          smoothSolver;
+        smoother        GaussSeidel;
+        nSweeps         2;
+        tolerance       1e-09;
+        relTol          0.0001;
+
+        // solver          PCG;
+        // preconditioner  DIC;
+        // nSweeps         2;
+        // tolerance       1e-09;
+        // relTol          0.0001;
+        // maxIter         400;
+    }
+
+    "(h|e).*"
+    {
+        // $U;
+        // tolerance       1e-10;
+        // relTol          1e-3;
+        // minIter         1;
+        // maxIter         400;
+        $U;
+        tolerance       1e-12;
+        relTol          0;
+        minIter         1;
+        maxIter         400;
+    }
+
+    Yi
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-12;
+        relTol          0;
+        maxIter         400;
+    }
+
+    "(k|omega|epsilon)"
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        // solver          GAMG;
+        // smoother        GaussSeidel;
+        // nSweeps         2;
+        tolerance       1e-15;
+        relTol          0;
+        maxIter         50;
+   	}
+
+    cellDisplacement
+    {
+        solver          GAMG;
+        smoother        GaussSeidel;
+        tolerance       1e-7;
+        relTol          0.01;
+    }
+}
+
+// ************************************************************************* //
